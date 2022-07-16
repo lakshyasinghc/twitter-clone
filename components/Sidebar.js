@@ -31,7 +31,7 @@ export default function Sidebar() {
 
 <button className="bg-blue-400 text-white rounded-full w-56 h-12 font-bold shadow-lg hover:bg-blue-600 text-lg hidden xl:inline">Tweet</button>
         {/* Mini-Profile */}
-        <div className='hoverEffect text-gray-700 flex items-center justify-scenter xl:justify-start mt-auto'>
+        <div className='hoverEffect text-gray-700 flex items-center justify-center xl:justify-start mt-auto'>
             <img  className="h-10 w-10 rounded-full xl:mr-2" src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.zvce1RSBjdzN_UZHZiJzXQHaHa%26pid%3DApi&f=1'/>
             <div className="leading-5 hidden xl:inline">
                 <h4 className="font-bold">Lakshya Singh Chouhan</h4>
