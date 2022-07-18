@@ -11,4 +11,7 @@ export default NextAuth({
     }),
 
   ],
+  pages:{
+    signin:"/auth/singin",
+  }
 })
