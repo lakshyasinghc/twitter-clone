@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 export default NextAuth({
-  secret: process.env.SECRET,
+
   providers: [
 
     GoogleProvider({
@@ -11,7 +11,17 @@ export default NextAuth({
     }),
 
   ],
+
   pages:{
-    signin:"/auth/singin",
+    signIn:"/auth/singin",
+  },
+  callbacks:{
+    async session({
+      session,token
+    }){
+      session.user.username= session.user.name.split(" ").join("").toLowerCase(); 
+      session.user.uid=token.sub; 
+      return session; 
+    }
   }
 })
