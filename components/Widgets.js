@@ -1,7 +1,9 @@
 import { SearchIcon } from '@heroicons/react/outline'
 import React from 'react'
 import News from './News';
-import { useState } from 'react';;
+import { useState } from 'react';
+import { AnimatePresence, motion} from 'framer-motion';
+;
 
 export default function Widgets({newsResults,randomUsersResults}) {
     const [articleNumber,changeArticleNumber]= useState(3); 
@@ -22,9 +24,15 @@ export default function Widgets({newsResults,randomUsersResults}) {
             <h4 className='font-bold text-xl px-4 '>
                 What's happening
                 </h4>
+                <AnimatePresence>
+
         {newsResults.slice(0,articleNumber).map((article)=>(
-            <News key={article.title} article={article} />
+            <motion.div key={article.title} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:1}}> 
+
+                <News key={article.title} article={article} />
+            </motion.div>
         ))}
+                </AnimatePresence>
         <button onClick={click} className="text-blue-300 pl-4 pb-3 hover:text-blue-400  ">Show more</button>
            
         </div>
@@ -32,8 +40,14 @@ export default function Widgets({newsResults,randomUsersResults}) {
             <h4 className="font-bold text-xl px-4 ">
                 Who to follow
             </h4>
+
+
+
+            <AnimatePresence>
+
             {randomUsersResults.slice(0,userNumber).map((randomUser)=>(
-                <div key={randomUser.login.username}  className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-200">
+                <motion.div key= {randomUser.login.username} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:1}}>
+                <div key={randomUser.login.username}  className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-200 transition duration-500 ease-linear">
                     <img className=" rounded-full" width="40" src={randomUser.picture.thumbnail} alt="userImage"/>
                    <div  className="truncate ml-4 leading-5">
                     <h4 className='font-bold hover:underline text-[15px] truncate '>{randomUser.login.username}</h4>              
@@ -41,7 +55,9 @@ export default function Widgets({newsResults,randomUsersResults}) {
                     </div>
                     <button className="ml-auto bg-black rounded-full text-white text-sm px-3.5 py-1.5 font-bold">Follow</button>
                 </div>
+                </motion.div>
             ))}
+            </AnimatePresence>
             <button onClick={()=>{changeUserNumber(userNumber+3)}} className="text-blue-300 pl-4 pb-3 hover:text-blue-400 ">
                 Show more
             </button>
