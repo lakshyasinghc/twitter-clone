@@ -6,15 +6,17 @@ import {db,storage} from "../firebase";
 import { useSession } from "next-auth/react";
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid";
 import { useRouter } from 'next/router';
-
+import { useRecoilState } from 'recoil';
+import {modalState} from "../atom/modalAtom";
 import { deleteObject, ref } from 'firebase/storage';
-import { info } from 'autoprefixer';
+
 
 export default function Postr({post}) {
     const router= useRouter(); 
     const {data:session} = useSession(); 
     const [likes,setLikes]= useState([]); 
     const [hasLiked,setHasLiked]= useState(false); 
+    const [open, setOpen]= useRecoilState(modalState); 
 
     useEffect(()=>{
         const unsubscribe= onSnapshot(
@@ -77,7 +79,7 @@ export default function Postr({post}) {
             <img src={post.data().image} alt="" className='rounded-2xl w- mr-2 '/>
             {/* icons */}
             <div className="flex justify-evenly text-gray-500 p-2 ">
-                <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
+                <ChatIcon  onClick= {()=>setOpen(!open)} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
                 
                 {session?.user.uid === post?.data().id&&(
 
