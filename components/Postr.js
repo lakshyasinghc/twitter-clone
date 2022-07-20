@@ -1,28 +1,28 @@
 import { ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon ,ChartSquareBarIcon} from '@heroicons/react/outline'
 import React from 'react'
-
+import Moment from 'react-moment'
 export default function Postr({post}) {
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200">
         {/* user image */}
-        <img  className="h-11 w-11 rounded-full mr-4"src={post.userImg} alt="user-img"/>
+        <img  className="h-11 w-11 rounded-full mr-4"src={post.data().userImg} alt="user-img"/>
         {/* right side */}
         <div className="">
             {/* Header */}
             <div className='flex justify-between items-center'>
                 {/* user info */}
                 <div className="flex space-x-1 items-center whitespace-nowrap">
-                    <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{post.name}</h4>
-                    <span className="text-sm sm:text-[15px]">{post.username}</span>
-                    <span className="text-sm sm:text-[15px] hover:underline">{post.timestamp}</span>
+                    <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">{post.data().name}</h4>
+                    <span className="text-sm sm:text-[15px]">@{post.data().username}</span>
+                    <span className="text-sm sm:text-[15px] hover:underline"><Moment fromNow>{post?.timestamp?.toDate()}</Moment></span>
                 </div>
                 {/* dot icon */}
                 <DotsHorizontalIcon className='h-10 hoverEffect w-10 hover:bg-sky-100 hover:text-sky-500 p-2' />
             </div>
             {/* post text */}
-            <p className="text-gray-800 text-[15px] sm:text-[16px] mb-2 ">{post.text}</p>
+            <p className="text-gray-800 text-[15px] sm:text-[16px] mb-2 ">{post.data().text}</p>
             {/* post image */}
-            <img src={post.img} alt="" className='rounded-2xl w- mr-2 '/>
+            <img src={post.data().image} alt="" className='rounded-2xl w- mr-2 '/>
             {/* icons */}
             <div className="flex justify-evenly text-gray-500 p-2 ">
                 <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>

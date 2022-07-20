@@ -7,18 +7,7 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/fi
 import { getDownloadURL,ref, uploadString } from 'firebase/storage';
 
 
-
-
-
-
-
-
-
-
-
 export default function Input() {
-
-
 
 
     const {data:session} = useSession(); 
