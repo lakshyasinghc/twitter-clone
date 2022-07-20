@@ -8,6 +8,7 @@ import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid";
 import { useRouter } from 'next/router';
 
 import { deleteObject, ref } from 'firebase/storage';
+import { info } from 'autoprefixer';
 
 export default function Postr({post}) {
     const router= useRouter(); 
@@ -47,7 +48,10 @@ export default function Postr({post}) {
         if(window.confirm("Are you sure you want ot delete this post ?")){
 
             deleteDoc(doc(db,"posts",post.id))
-            deleteObject(ref(storage ,`posts/${post.id}/image`)); 
+            if(post.data().image){
+
+                deleteObject(ref(storage ,`posts/${post.id}/image`)); 
+            }
         }
     }
   return (
