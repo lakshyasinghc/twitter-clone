@@ -2,10 +2,12 @@ import { ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon ,ChartSqu
 import React, {useEffect, useState} from 'react';
 import Moment from 'react-moment';
 import {collection, deleteDoc, doc, onSnapshot, setDoc}from "firebase/firestore"; 
-import {db} from "../firebase";
+import {db,storage} from "../firebase";
 import { useSession } from "next-auth/react";
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid";
 import { useRouter } from 'next/router';
+
+import { deleteObject, ref } from 'firebase/storage';
 
 export default function Postr({post}) {
     const router= useRouter(); 
@@ -24,6 +26,7 @@ export default function Postr({post}) {
             setHasLiked(likes.findIndex((like)=>like.id===session?.user?.uid)!==-1);
         },[likes]);
 
+
     async function likePost(){
         if(session){
 
@@ -37,6 +40,14 @@ export default function Postr({post}) {
             }
         }else{
            router.push("/auth/signin");
+        }
+    }
+
+    async function deletePost(){
+        if(window.confirm("Are you sure you want ot delete this post ?")){
+
+            deleteDoc(doc(db,"posts",post.id))
+            deleteObject(ref(storage ,`posts/${post.id}/image`)); 
         }
     }
   return (
@@ -63,7 +74,11 @@ export default function Postr({post}) {
             {/* icons */}
             <div className="flex justify-evenly text-gray-500 p-2 ">
                 <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
-                <TrashIcon className='h-9 w-9 hoverEffect p-2 hover:text-red-500 hover:bg-red-200'/>
+                
+                {session?.user.uid === post?.data().id&&(
+
+                <TrashIcon onClick={deletePost} className='h-9 w-9 hoverEffect p-2 hover:text-red-500 hover:bg-red-200'/>
+                )}
               
               <div className="flex items-center ">
 
