@@ -3,11 +3,11 @@ import React, {useEffect, useState} from 'react';
 import Moment from 'react-moment';
 import {collection, deleteDoc, doc, onSnapshot, setDoc}from "firebase/firestore"; 
 import {db,storage} from "../firebase";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid";
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import {modalState} from "../atom/modalAtom";
+import {modalState, postIdState} from "../atom/modalAtom";
 import { deleteObject, ref } from 'firebase/storage';
 
 
@@ -17,6 +17,8 @@ export default function Postr({post}) {
     const [likes,setLikes]= useState([]); 
     const [hasLiked,setHasLiked]= useState(false); 
     const [open, setOpen]= useRecoilState(modalState); 
+    const [postId,setPostId]= useRecoilState(postIdState); 
+
 
     useEffect(()=>{
         const unsubscribe= onSnapshot(
@@ -79,7 +81,16 @@ export default function Postr({post}) {
             <img src={post.data().image} alt="" className='rounded-2xl w- mr-2 '/>
             {/* icons */}
             <div className="flex justify-evenly text-gray-500 p-2 ">
-                <ChatIcon  onClick= {()=>setOpen(!open)} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
+                <ChatIcon  onClick= {()=>{
+                    if(!session){
+                        router.push("/auth/signin"); 
+
+                    }else{
+                        setPostId(post.id),
+                        setOpen(!open)
+                    }
+             
+                } } className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
                 
                 {session?.user.uid === post?.data().id&&(
 
