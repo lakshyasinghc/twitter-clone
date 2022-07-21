@@ -15,10 +15,15 @@ export default function Postr({post}) {
     const router= useRouter(); 
     const {data:session} = useSession(); 
     const [likes,setLikes]= useState([]); 
+    const [comments , setComments]= useState([]); 
     const [hasLiked,setHasLiked]= useState(false); 
     const [open, setOpen]= useRecoilState(modalState); 
     const [postId,setPostId]= useRecoilState(postIdState); 
-
+useEffect(()=>{
+    const unsubscribe= onSnapshot(
+        collection(db,"posts",post.id,"comments"),(snapshot)=>setComments(snapshot.docs)
+    )
+},[db]);
 
     useEffect(()=>{
         const unsubscribe= onSnapshot(
@@ -63,7 +68,7 @@ export default function Postr({post}) {
         {/* user image */}
         <img  className="h-11 w-11 rounded-full mr-4"src={post.data().userImg} alt="user-img"/>
         {/* right side */}
-        <div className="">
+        <div className="flex-1">
             {/* Header */}
             <div className='flex justify-between items-center'>
                 {/* user info */}
@@ -81,6 +86,8 @@ export default function Postr({post}) {
             <img src={post.data().image} alt="" className='rounded-2xl w- mr-2 '/>
             {/* icons */}
             <div className="flex justify-evenly text-gray-500 p-2 ">
+                <div className="flex items-center select-none">
+
                 <ChatIcon  onClick= {()=>{
                     if(!session){
                         router.push("/auth/signin"); 
@@ -91,6 +98,12 @@ export default function Postr({post}) {
                     }
              
                 } } className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-200 '/>
+                     {
+                comments.length>0 && (
+                    <span   className='text-sm'> {comments.length}</span>
+                )
+               }
+                </div>
                 
                 {session?.user.uid === post?.data().id&&(
 
